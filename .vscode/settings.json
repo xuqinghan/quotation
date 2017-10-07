@@ -1,1 +1,17 @@
-{}
+{
+    "workbench.colorTheme": "Monokai",
+    "editor.fontSize": 20,
+    "editor.wordWrap": "on",
+    "python.pythonPath": "/usr/bin/python3.6",
+      // 配置 glob 模式以在搜索中排除文件和文件夹。例如，文件资源管理器根据此设置决定文件或文件夹的显示和隐藏。
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/__pycache__": true
+    },
+    "files.insertFinalNewline": true,
+    "files.autoSave": "afterDelay"
+}
