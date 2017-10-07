@@ -1,8 +1,10 @@
 '''入口'''
+
 from flask import Flask, jsonify
 from .futures import api as futures_api
 from .extensions import init_db
 from . import config
+
 
 def create_app():
     """Create a Flask app."""

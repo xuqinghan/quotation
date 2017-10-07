@@ -31,5 +31,7 @@ WORKDIR /code
 
 #安装需要的python库
 RUN pip3 install flask
+#在出现错误时自动重启，flask自带的reload只能在不出错的时候重启
+RUN pip3 install flask_failsafe
 RUN pip3 install flask-sqlalchemy
 RUN pip3 install flask_restful

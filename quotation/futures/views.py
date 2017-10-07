@@ -9,7 +9,7 @@ api = Api()
 class Foo(Resource):
     def get(self):
         cc1 = ContinualContract(code='i01',name='铁矿1月')
-        res = {'hello 1': cc1.__repr__()}
+        res = {'hello 1':cc1.__repr__()}
         #print(res)
         return jsonify(res)
 

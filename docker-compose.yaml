@@ -2,6 +2,9 @@ version: "3"
 
 services:
   quotation_api:
+    #restart: always
+    #stdin_open: true
+    #tty: true
     image: quotation_dev:latest
     volumes:
       - /home/xuqinghan/lazyman35/quotation:/code
