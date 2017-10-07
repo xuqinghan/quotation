@@ -1,19 +1,20 @@
-from extensions import db
+from quotation.extensions import db
 
-class Quotation(db.Model):
-    '''行情'''
+class ContinualContract(db.Model):
+    '''战场 同月份跨年Contract拼接而成'''
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    code = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(20), nullable=False)
+    #email = db.Column(db.String(120), unique=True, nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return f'<期货品种 {self.code},{self.name}>'
 
-class Quotation(db.Model):
-    '''行情'''
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+# class Quotation(db.Model):
+#     '''1个单位时间的 行情 构成地形的元素'''
+#     id = db.Column(db.Integer, primary_key=True)
+#     datetime = db.Column(db, nullable=False)
+#     open = db.Column(db.Float, unique=True, nullable=False)
 
-    def __repr__(self):
-        return '<User %r>' % self.username
+#     def __repr__(self):
+#         return '<User %r>' % self.username

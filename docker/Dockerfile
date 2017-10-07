@@ -1,38 +1,35 @@
-#ubuntu-with-python36
+#quotation api for lazyman35
+#xuqinghan @ 201701005
 
-#xuqinghan @ 20170903
-
-#ubuntu16.04+python36
-
-
-#docker build -t ubuntu-with-python .
-#docker tag ubuntu-with-python xuqinghan/ubuntu-with-python:3
-
-#docker tag ubuntu-with-python xuqinghan/ubuntu-with-python:3.6
-
-#docker tag ubuntu-with-python xuqinghan/ubuntu-with-python:3.6.2
-
-#docker tag ubuntu-with-python xuqinghan/ubuntu-with-python:latest
+#启动container
 
 
+#docker run --name quotation_api -itd -p 5000:5000 -v /home/xuqinghan/lazyman35/quotation:/code quotation_dev:latest
 
-FROM ubuntu
+#启动python3
+#docker start quotation_api
+#docker attach quotation_api
+# cd /code
+# python3 main.py
 
-#python3.6  http://ubuntuhandbook.org/index.php/2017/07/install-python-3-6-1-in-ubuntu-16-04-lts/
-#RUN cp ./sources.list /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get install -y apt-transport-https vim iproute2 net-tools build-essential ca-certificates curl wget software-properties-common
-RUN add-apt-repository ppa:jonathonf/python-3.6
-RUN apt-get update
-RUN apt-get install -y python3.6
-RUN apt install -y python3.6-dev
-RUN apt install -y python3.6-venv
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python3.6 get-pip.py
-#RUN ln -s /usr/bin/python3.6 /usr/local/bin/python3
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
-RUN update-alternatives --config python3
+#删除容器，要加-v 
+#docker rm quotation_api
+#docker rmi quotation
+#删除全部不运行的容器
+#docker rm $(docker ps -a -q) -v
 
-#RUN rm /usr/bin/python3
-#RUN ln -s python3.5 /usr/bin/python3
+
+#创建镜像
+#docker build -t quotation .
+
+FROM ubuntu-with-python
+LABEL author="lazyman"
+
+#代码复制过来后的路径
+RUN mkdir /code
+WORKDIR /code
+
+#安装需要的python库
+RUN pip3 install flask
+RUN pip3 install flask-sqlalchemy
+RUN pip3 install flask_restful

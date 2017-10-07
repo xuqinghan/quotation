@@ -1,5 +1,9 @@
 import os
 
-INSTANCE_FOLDER_PATH = os.path.join('/tmp', 'instance')
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + INSTANCE_FOLDER_PATH\
-                          + '/db.sqlite'
+#返回中文
+JSON_AS_ASCII = False
+
+#db路径
+INSTANCE_FOLDER_PATH = '/home/quotation'
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+SQLALCHEMY_DATABASE_URI = 'sqlite:////' + INSTANCE_FOLDER_PATH + '/db/db.sqlite'

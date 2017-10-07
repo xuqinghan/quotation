@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  quotation_api:
+    image: quotation_dev:latest
+    volumes:
+      - /home/xuqinghan/lazyman35/quotation:/code
+    ports:
+      - "5000:5000"
+    command: python3 main.py
