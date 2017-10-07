@@ -7,6 +7,5 @@
 ##docker-compose
     创建并启动
     docker-compose up
-    docker-compose run quotation_api
     重启
     docker-compose start
