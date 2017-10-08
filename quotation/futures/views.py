@@ -1,5 +1,5 @@
 #from flask import Blueprint
-from .models import Commodity,ContinualContract
+from .models import Commodity,ContinualContract,Contract
 from flask_restful import fields, marshal_with,reqparse,Resource, Api
 #from flask import jsonify
 #futures_bp = Blueprint("futures",__name__)
@@ -42,7 +42,7 @@ parser_continual_contract.add_argument('commodity_code')
 parser_continual_contract.add_argument('month')
 
 class ContinualContractResource(Resource):
-    def get(self,code):
+    def get(self,commodity_code,month):
         # cc1 = ContinualContract(code=code,name='铁矿1月')
         # res = {'hello 1':cc1.__repr__()}
         # #print(res)
@@ -65,7 +65,38 @@ class ContinualContractResource(Resource):
         db.session.commit()
         print(cc1)
 
+parser_contract = reqparse.RequestParser()
+parser_contract.add_argument('commodity_code')
+parser_contract.add_argument('year')
+parser_contract.add_argument('month')
+
+
+class ContractResource(Resource):
+    def get(self,commodity_code,year,month):
+        pass
+
+    def put(self,commodity_code,year,month):
+        args = parser_continual_contract.parse_args()
+        print(args)
+        #print('哈哈')
+
+        contract1 = Contract.find_by_commodity_year_month(commodity_code, year, month)
+        if contract1:
+            print('update...')
+            #cc1.month = args.month
+        else:
+            print('add...')
+            contract1 = Contract(
+                commodity_code = commodity_code,
+                year = year, 
+                month = month)
+            db.session.add(contract1)
+        db.session.commit()
+        print(contract1)
+
 
 api.add_resource(CommodityResource, '/futures/commodity/<string:code>')
 
 api.add_resource(ContinualContractResource, '/futures/continual/<string:commodity_code>/<int:month>')
+
+api.add_resource(ContractResource, '/futures/contract/<string:commodity_code>/<int:year>/<int:month>')

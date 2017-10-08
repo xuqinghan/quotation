@@ -8,8 +8,11 @@ class Commodity(db.Model):
 
     continual_contracts = db.relationship('ContinualContract', backref='commodity')
 
+    contracts = db.relationship('Contract', backref='commodity')
+
+
     @classmethod
-    def find_by_code(cls,code):
+    def find_by_code(cls, code):
         commodity1 = cls.query.filter_by(code=code).first()
         assert(commodity1!=None,AssertionError('期货商品代码{commodity_code}不存在!'))
         return commodity1
@@ -36,18 +39,32 @@ class ContinualContract(db.Model):
 
 
     def __repr__(self):
-        return f'<期货连续合约 {self.commodity.name},{self.month}月交割>'
+        return f'<期货连续行情 {self.commodity.name},{self.month}月交割>'
 
-# class Contract(db.Model):
-#     '''每一份合约 品种+年份+月份'''
-#     id = db.Column(db.Integer, primary_key=True)
-#     commodity_name = db.Column(db.String(20), nullable=False)
-#     year = db.Column(db.Integer, nullable=False)
-#     month = db.Column(db.Integer, nullable=False)
-#     #email = db.Column(db.String(120), unique=True, nullable=False)
 
-#     def __repr__(self):
-#         return f'<期货合约 {self.code},{self.name}>'
+class Contract(db.Model):
+    '''每一份合约 品种+交割年月'''
+    id = db.Column(db.Integer, primary_key=True)
+    id_commodity = db.Column(db.Integer,db.ForeignKey(Commodity.id))
+    year = db.Column(db.Integer, nullable=False)
+    month = db.Column(db.Integer, nullable=False)
+
+    def __init__(self,commodity_code,year,month):
+        commodity1 = Commodity.find_by_code(commodity_code)
+        self.id_commodity = commodity1.id
+        self.year = year
+        self.month = month
+
+    @classmethod
+    def find_by_commodity_year_month(cls,commodity_code,year,month):
+        commodity1 = Commodity.find_by_code(commodity_code)
+        return cls.query.filter_by(id_commodity=commodity1.id).filter_by(year=year).filter_by(month=month).first()
+
+    def __repr__(self):
+        return '<期货合约 {code}{year_str}{month_str}>'.format(code = self.commodity.name,
+        year_str = str(self.year)[-2:],
+        month_str = str(self.month).zfill(2)
+        )
 
 
 # class Quotation(db.Model):
