@@ -1,7 +1,7 @@
 #from flask import Blueprint
-from .models import Commodity,ContinualContract,Contract
+from .models import Commodity,ContinualContract,Contract,Quotation
 from flask_restful import fields, marshal_with,reqparse,Resource, Api
-#from flask import jsonify
+from flask import jsonify,request
 #futures_bp = Blueprint("futures",__name__)
 from quotation.extensions import db
 
@@ -24,8 +24,10 @@ class CommodityResource(Resource):
         return commodity1
 
     def put(self, code):
+        
         args = parser_commodity.parse_args()
         print(args)
+        print(request.args)
         commodity1 = Commodity.find_by_code(code)
         if commodity1:
             print('update...')
@@ -52,6 +54,7 @@ class ContinualContractResource(Resource):
     def put(self,commodity_code,month):
         args = parser_continual_contract.parse_args()
         print(args)
+        print(request.args)
         #print('哈哈')
 
         cc1 = ContinualContract.find_by_commodity_month(commodity_code,month)
@@ -79,7 +82,7 @@ class ContractResource(Resource):
         args = parser_continual_contract.parse_args()
         print(args)
         #print('哈哈')
-
+        print(request.args)
         contract1 = Contract.find_by_commodity_year_month(commodity_code, year, month)
         if contract1:
             print('update...')
@@ -95,8 +98,41 @@ class ContractResource(Resource):
         print(contract1)
 
 
+parser_quotation = reqparse.RequestParser()
+parser_quotation.add_argument('category')
+parser_quotation.add_argument('contract')
+#parser_quotation.add_argument('quotation')
+
+class QuotationResource(Resource):
+    '''只用来更新行情'''
+    def put(self):
+        #args = request.form
+        #json_data = request.get_json(force=True)
+        args = parser_quotation.parse_args()
+        #print(request.args)
+        print(args)
+        # #print('哈哈')
+
+        # contract1 = Contract.find_by_commodity_year_month(commodity_code, year, month)
+        # if contract1:
+        #     print('update...')
+        #     #cc1.month = args.month
+        # else:
+        #     print('add...')
+        #     contract1 = Contract(
+        #         commodity_code = commodity_code,
+        #         year = year, 
+        #         month = month)
+        #     db.session.add(contract1)
+        # db.session.commit()
+        # print(contract1)
+        pass
+
+
 api.add_resource(CommodityResource, '/futures/commodity/<string:code>')
 
 api.add_resource(ContinualContractResource, '/futures/continual/<string:commodity_code>/<int:month>')
 
 api.add_resource(ContractResource, '/futures/contract/<string:commodity_code>/<int:year>/<int:month>')
+
+api.add_resource(QuotationResource, '/futures/quotation')

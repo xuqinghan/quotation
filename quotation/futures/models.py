@@ -49,6 +49,8 @@ class Contract(db.Model):
     year = db.Column(db.Integer, nullable=False)
     month = db.Column(db.Integer, nullable=False)
 
+    quotations = db.relationship("Quotation", backref="contract")
+
     def __init__(self,commodity_code,year,month):
         commodity1 = Commodity.find_by_code(commodity_code)
         self.id_commodity = commodity1.id
@@ -61,25 +63,25 @@ class Contract(db.Model):
         return cls.query.filter_by(id_commodity=commodity1.id).filter_by(year=year).filter_by(month=month).first()
 
     def __repr__(self):
-        return '<期货合约 {code}{year_str}{month_str}>'.format(code = self.commodity.name,
+        return '<期货合约 {name}{year_str}{month_str}>'.format(name = self.commodity.name,
         year_str = str(self.year)[-2:],
         month_str = str(self.month).zfill(2)
         )
 
 
-# class Quotation(db.Model):
-#     '''1个单位时间的 行情 构成地形的元素'''
-#     id = db.Column(db.Integer, primary_key=True)
-#     id_contract = db.Column(db.Integer,db.ForeignKey('Contract.id'))
-#     datetime = db.Column(db, nullable=False)
-#     open = db.Column(db.Integer, nullable=False)
-#     high = db.Column(db.Integer, nullable=False)
-#     low = db.Column(db.Integer, nullable=False)
-#     close = db.Column(db.Integer, nullable=False)
-#     vol = db.Column(db.Integer, nullable=False)
-#     open_interest = db.Column(db.Integer, nullable=False)
+class Quotation(db.Model):
+    '''1个单位时间的 行情 构成地形的元素'''
+    id = db.Column(db.Integer, primary_key=True)
+    id_contract = db.Column(db.Integer,db.ForeignKey(Contract.id))
+    scale_time = db.Column(db.String(20), nullable=False)
+    datetime = db.Column(db.DateTime, nullable=False)
+    open = db.Column(db.Integer, nullable=False)
+    high = db.Column(db.Integer, nullable=False)
+    low = db.Column(db.Integer, nullable=False)
+    close = db.Column(db.Integer, nullable=False)
+    vol = db.Column(db.Integer, nullable=False)
+    open_interest = db.Column(db.Integer, nullable=False)
 
-#     contract = db.relationship("Contract", back_populates="quotations")
 
-#     def __repr__(self):
-#         return '<行情 %r>' % self.username
+    def __repr__(self):
+        return f'<行情 {self.contract} {self.scale_time},开盘{self.open},最高{self.high},最低{self.low},收盘{self.close},成交量{self.vol},持仓量{self.open_interest}>'
