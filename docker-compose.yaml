@@ -3,11 +3,12 @@ version: "3"
 services:
   quotation_api:
     #restart: always
-    #stdin_open: true
-    #tty: true
+    stdin_open: true
+    tty: true
+    build: ./docker
     image: quotation_dev:latest
     volumes:
       - /home/xuqinghan/lazyman35/quotation:/code
     ports:
       - "5000:5000"
-    command: python3 main.py
+    #command: python3 main.py

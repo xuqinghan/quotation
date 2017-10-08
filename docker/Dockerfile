@@ -35,3 +35,4 @@ RUN pip3 install flask
 RUN pip3 install flask_failsafe
 RUN pip3 install flask-sqlalchemy
 RUN pip3 install flask_restful
+RUN pip3 install requests

@@ -1,6 +1,6 @@
 from flask_failsafe import failsafe
 
-@failsafe
+#@failsafe
 def create_app():
     '''为了在拼写错误的情况下，让app重启，需要用failsafe'''
     from quotation import create_app as create_app1
